@@ -1,4 +1,3 @@
----
 - name: Simulação de Integração com ServiceNow
   hosts: localhost
   connection: local
