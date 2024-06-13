@@ -1,24 +1,23 @@
-- name: Simulação de Integração com ServiceNow
-  hosts: localhost
-  connection: local
+- name: Integração com ServiceNow
+  hosts: all
   tasks:
-   - name: Criar um novo incidente
-      community.general.servicenow_incident:
-        state: present
-        instance: "{{ servicenow_instance }}"
-        username: "{{ servicenow_user }}"
-        password: "{{ servicenow_password }}"
-        short_description: "Incidente de teste criado pelo Ansible"
-        description: "Este é um incidente de teste para simular a integração com o ServiceNow."
-      register: new_incident
+    - name: Criar um novo incidente
+       community.general.servicenow_incident:
+         state: present
+         instance: "{{ servicenow_instance }}"
+         username: "{{ servicenow_user }}"
+         password: "{{ servicenow_password }}"
+         short_description: "Incidente de teste criado pelo Ansible"
+         description: "Este é um incidente de teste para simular a integração com o ServiceNow."
+       register: new_incident
 
-   - name: Exibir número do incidente criado
-      ansible.builtin.debug:  
-        var: new_incident.incident.number
+    - name: Exibir número do incidente criado
+       ansible.builtin.debug:  
+         var: new_incident.incident.number
 
-   - name: Aguardar 5 segundos para o incidente ser processado
-      ansible.builtin.wait_for:
-        timeout: 5
+     - name: Aguardar 5 segundos para o incidente ser processado
+        ansible.builtin.wait_for:
+         timeout: 5
 
    - name: Consultar o incidente criado
       community.general.servicenow_incident:
