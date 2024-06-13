@@ -6,7 +6,6 @@
     servicenow_instance: 'https://sua_instancia.service-now.com'
     servicenow_user: 'seu_usuario'
     servicenow_password: 'sua_senha'
-
   tasks:
     - name: Criar um novo incidente
       community.general.servicenow_incident:
