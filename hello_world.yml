@@ -2,9 +2,9 @@
   hosts: localhost
   connection: local
   vars:
-    servicenow_instance: 'https://sua_instancia.service-now.com'
-    servicenow_user: 'seu_usuario'
-    servicenow_password: 'sua_senha'
+     servicenow_instance: 'https://sua_instancia.service-now.com'
+     servicenow_user: 'seu_usuario'
+     servicenow_password: 'sua_senha'
 
   tasks:
     - name: Criar um novo incidente
