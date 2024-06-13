@@ -2,7 +2,6 @@
   hosts: all
   tasks:
     - name: Criar um novo incidente
-       community.general.servicenow_incident:
          state: present
          instance: "{{ servicenow_instance }}"
          username: "{{ servicenow_user }}"
@@ -20,7 +19,6 @@
          timeout: 5
 
    - name: Consultar o incidente criado
-      community.general.servicenow_incident:
         instance: "{{ servicenow_instance }}"
         username: "{{ servicenow_user }}"
         password: "{{ servicenow_password }}"
@@ -37,7 +35,6 @@
         var: retrieved_incident.result[0]  
 
    - name: Atualizar o incidente com uma nova descrição
-      community.general.servicenow_incident:
         state: present
         instance: "{{ servicenow_instance }}"
         username: "{{ servicenow_user }}"
@@ -50,7 +47,6 @@
         timeout: 5
 
    - name: Consultar o incidente atualizado
-      community.general.servicenow_incident:
         instance: "{{ servicenow_instance }}"
         username: "{{ servicenow_user }}"
         password: "{{ servicenow_password }}"
