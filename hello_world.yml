@@ -6,9 +6,10 @@
     servicenow_instance: 'https://sua_instancia.service-now.com'
     servicenow_user: 'seu_usuario'
     servicenow_password: 'sua_senha'
+
   tasks:
     - name: Criar um novo incidente
-      community.general.servicenow_incident:
+      community.general.servicenow_incident:  # Ensure correct indentation here
         state: present
         instance: "{{ servicenow_instance }}"
         username: "{{ servicenow_user }}"
@@ -26,7 +27,7 @@
         timeout: 5
 
     - name: Consultar o incidente criado
-      community.general.servicenow_incident:
+      community.general.servicenow_incident:  # Ensure correct indentation here
         instance: "{{ servicenow_instance }}"
         username: "{{ servicenow_user }}"
         password: "{{ servicenow_password }}"
@@ -38,7 +39,7 @@
         var: retrieved_incident.result[0]  # Assuming the first result is the correct incident
 
     - name: Atualizar o incidente com uma nova descrição
-      community.general.servicenow_incident:
+      community.general.servicenow_incident:  # Ensure correct indentation here
         state: present
         instance: "{{ servicenow_instance }}"
         username: "{{ servicenow_user }}"
@@ -51,7 +52,7 @@
         timeout: 5
 
     - name: Consultar o incidente atualizado
-      community.general.servicenow_incident:
+      community.general.servicenow_incident:   # Ensure correct indentation here
         instance: "{{ servicenow_instance }}"
         username: "{{ servicenow_user }}"
         password: "{{ servicenow_password }}"
