@@ -1,10 +1,12 @@
+---
 - name: Simulação de Integração com ServiceNow
-  hosts: all
+  hosts: localhost
   connection: local
   vars:
-    servicenow_instance: 'https://sua_instancia.service-now.com'  # URL da sua instância
+    servicenow_instance: 'https://sua_instancia.service-now.com'
     servicenow_user: 'seu_usuario'
     servicenow_password: 'sua_senha'
+
   tasks:
     - name: Criar um novo incidente
       community.general.servicenow_incident:
@@ -15,9 +17,27 @@
         short_description: "Incidente de teste criado pelo Ansible"
         description: "Este é um incidente de teste para simular a integração com o ServiceNow."
       register: new_incident
+
+    - name: Exibir número do incidente criado
+      debug:
+        var: new_incident.incident.number
+
+    - name: Aguardar 5 segundos para o incidente ser processado
+      wait_for:
+        timeout: 5
+
+    - name: Consultar o incidente criado
+      community.general.servicenow_incident:
+        instance: "{{ servicenow_instance }}"
+        username: "{{ servicenow_user }}"
+        password: "{{ servicenow_password }}"
+        query: "number={{ new_incident.incident.number }}"
+      register: retrieved_incident
+
     - name: Exibir informações do incidente criado
       debug:
-        msg: "Incidente criado com o número {{ new_incident.incident.number }}"
+        var: retrieved_incident.result[0]  # Assuming the first result is the correct incident
+
     - name: Atualizar o incidente com uma nova descrição
       community.general.servicenow_incident:
         state: present
@@ -26,15 +46,19 @@
         password: "{{ servicenow_password }}"
         number: "{{ new_incident.incident.number }}"
         description: "Descrição do incidente atualizada pelo Ansible"
+
+    - name: Aguardar 5 segundos para o incidente ser processado
+      wait_for:
+        timeout: 5
+
     - name: Consultar o incidente atualizado
       community.general.servicenow_incident:
-        state: present
         instance: "{{ servicenow_instance }}"
         username: "{{ servicenow_user }}"
         password: "{{ servicenow_password }}"
-        number: "{{ new_incident.incident.number }}"
-        display_value: true
+        query: "number={{ new_incident.incident.number }}"
       register: updated_incident
+
     - name: Exibir informações do incidente atualizado
       debug:
-        msg: "{{ updated_incident.incident }}"
+        var: updated_incident.result[0]  # Assuming the first result is the correct incident
