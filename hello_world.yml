@@ -1,3 +1,4 @@
+---
 - name: Simulação de Integração com ServiceNow
   hosts: all
   connection: local
