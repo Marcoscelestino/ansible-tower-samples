@@ -1,4 +1,4 @@
-  name: Simulação de Integração com ServiceNow
+- name: Simulação de Integração com ServiceNow
   hosts: all
   connection: local
   vars:
