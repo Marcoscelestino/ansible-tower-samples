@@ -9,7 +9,7 @@
 
   tasks:
     - name: Criar um novo incidente
-      community.general.servicenow_incident:  # Ensure correct indentation here
+      community.general.servicenow_incident:
         state: present
         instance: "{{ servicenow_instance }}"
         username: "{{ servicenow_user }}"
@@ -19,27 +19,32 @@
       register: new_incident
 
     - name: Exibir número do incidente criado
-      debug:
+      ansible.builtin.debug:  
         var: new_incident.incident.number
 
     - name: Aguardar 5 segundos para o incidente ser processado
-      wait_for:
+      ansible.builtin.wait_for:
         timeout: 5
 
     - name: Consultar o incidente criado
-      community.general.servicenow_incident:  # Ensure correct indentation here
+      community.general.servicenow_incident:
         instance: "{{ servicenow_instance }}"
         username: "{{ servicenow_user }}"
         password: "{{ servicenow_password }}"
         query: "number={{ new_incident.incident.number }}"
       register: retrieved_incident
 
+    - name: Verificar se o incidente foi encontrado
+      fail:
+        msg: "Incidente não encontrado após a criação."
+      when: retrieved_incident.result | length == 0
+
     - name: Exibir informações do incidente criado
-      debug:
-        var: retrieved_incident.result[0]  # Assuming the first result is the correct incident
+      ansible.builtin.debug:
+        var: retrieved_incident.result[0]  
 
     - name: Atualizar o incidente com uma nova descrição
-      community.general.servicenow_incident:  # Ensure correct indentation here
+      community.general.servicenow_incident:
         state: present
         instance: "{{ servicenow_instance }}"
         username: "{{ servicenow_user }}"
@@ -48,17 +53,22 @@
         description: "Descrição do incidente atualizada pelo Ansible"
 
     - name: Aguardar 5 segundos para o incidente ser processado
-      wait_for:
+      ansible.builtin.wait_for:
         timeout: 5
 
     - name: Consultar o incidente atualizado
-      community.general.servicenow_incident:   # Ensure correct indentation here
+      community.general.servicenow_incident:
         instance: "{{ servicenow_instance }}"
         username: "{{ servicenow_user }}"
         password: "{{ servicenow_password }}"
         query: "number={{ new_incident.incident.number }}"
       register: updated_incident
 
+    - name: Verificar se o incidente foi encontrado
+      fail:
+        msg: "Incidente não encontrado após a atualização."
+      when: updated_incident.result | length == 0
+
     - name: Exibir informações do incidente atualizado
-      debug:
-        var: updated_incident.result[0]  # Assuming the first result is the correct incident
+      ansible.builtin.debug:
+        var: updated_incident.result[0]  
