@@ -1,5 +1,5 @@
 - name: Simulação de Integração com ServiceNow
-  hosts: localhost
+  hosts: all
   connection: local
   vars:
      servicenow_instance: 'https://sua_instancia.service-now.com'
