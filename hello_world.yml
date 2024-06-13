@@ -3,7 +3,7 @@
   hosts: localhost
   connection: local
   tasks:
-    - name: Criar um novo incidente
+   - name: Criar um novo incidente
       community.general.servicenow_incident:
         state: present
         instance: "{{ servicenow_instance }}"
@@ -13,15 +13,15 @@
         description: "Este é um incidente de teste para simular a integração com o ServiceNow."
       register: new_incident
 
-    - name: Exibir número do incidente criado
+   - name: Exibir número do incidente criado
       ansible.builtin.debug:  
         var: new_incident.incident.number
 
-    - name: Aguardar 5 segundos para o incidente ser processado
+   - name: Aguardar 5 segundos para o incidente ser processado
       ansible.builtin.wait_for:
         timeout: 5
 
-    - name: Consultar o incidente criado
+   - name: Consultar o incidente criado
       community.general.servicenow_incident:
         instance: "{{ servicenow_instance }}"
         username: "{{ servicenow_user }}"
@@ -29,16 +29,16 @@
         query: "number={{ new_incident.incident.number }}"
       register: retrieved_incident
 
-    - name: Verificar se o incidente foi encontrado
+   - name: Verificar se o incidente foi encontrado
       fail:
         msg: "Incidente não encontrado após a criação."
       when: retrieved_incident.result | length == 0
 
-    - name: Exibir informações do incidente criado
+   - name: Exibir informações do incidente criado
       ansible.builtin.debug:
         var: retrieved_incident.result[0]  
 
-    - name: Atualizar o incidente com uma nova descrição
+   - name: Atualizar o incidente com uma nova descrição
       community.general.servicenow_incident:
         state: present
         instance: "{{ servicenow_instance }}"
@@ -47,11 +47,11 @@
         number: "{{ new_incident.incident.number }}"
         description: "Descrição do incidente atualizada pelo Ansible"
 
-    - name: Aguardar 5 segundos para o incidente ser processado
+   - name: Aguardar 5 segundos para o incidente ser processado
       ansible.builtin.wait_for:
         timeout: 5
 
-    - name: Consultar o incidente atualizado
+   - name: Consultar o incidente atualizado
       community.general.servicenow_incident:
         instance: "{{ servicenow_instance }}"
         username: "{{ servicenow_user }}"
@@ -59,11 +59,11 @@
         query: "number={{ new_incident.incident.number }}"
       register: updated_incident
 
-    - name: Verificar se o incidente foi encontrado
+   - name: Verificar se o incidente foi encontrado
       fail:
         msg: "Incidente não encontrado após a atualização."
       when: updated_incident.result | length == 0
 
-    - name: Exibir informações do incidente atualizado
+   - name: Exibir informações do incidente atualizado
       ansible.builtin.debug:
         var: updated_incident.result[0]  
